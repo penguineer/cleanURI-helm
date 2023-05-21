@@ -1,0 +1,19 @@
+apiVersion: v2
+name: cleanuri-helm
+description: A Helm chart for Kubernetes
+type: application
+version: "0.1.0"
+
+dependencies:
+  - name: apigateway
+    version: "0.1.0"
+    repository: "file://charts/apigateway"
+  - name: extractor
+    version: "0.1.0"
+    repository: "file://charts/extractor"
+  - name: canonizer
+    version: "0.1.0"
+    repository: "file://charts/canonizer"
+  - name: webui
+    version: "0.1.0"
+    repository: "file://charts/webui"

@@ -1,0 +1,25 @@
+apigateway:
+  config:
+    # Port for the HTTP endpoint (default 8080, only change when running locally!)
+    PORT: 8080
+    # RabbitMQ host
+    AMQP_HOST:
+    # RabbitMQ user
+    AMQP_USER:
+    # RabbitMQ password
+    AMQP_PASS:
+    # RabbitMQ virtual host, defaults to '/'
+    AMQP_VHOST:
+    # AMQP queue (inbound) to receive results
+    GATEWAY_RESULT_QUEUE:
+    # AMQP routing key (outbound) for requests to the Canonizer
+    GATEWAY_TASK_RK:
+    # Timeout for waiting on backend results (default: 30s)
+    GATEWAY_CACHE_TIMEOUT: 30s
+    # Cache eviction interval (default: 300s)
+    GATEWAY_CACHE_EVICT: 300s
+
+webui:
+  config:
+    # URL to the API Gateway (default: http://localhost:8080)
+    REACT_APP_API_GATEWAY:

@@ -2,7 +2,6 @@
 
 > Helm chart for the [cleanURI](https://github.com/penguineer/cleanURI) service.
 
-
 ## Maintainers
 
 * Stefan Haun ([@penguineer](https://github.com/penguineer))
