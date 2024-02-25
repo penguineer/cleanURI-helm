@@ -1,0 +1,413 @@
+---
+# Source: cleanuri-helm/charts/apigateway/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-apigateway
+  labels:
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.1"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cleanuri-helm/charts/canonizer/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-canonizer
+  labels:
+    helm.sh/chart: canonizer-0.1.0
+    app.kubernetes.io/name: canonizer
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cleanuri-helm/charts/extractor/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-extractor
+  labels:
+    helm.sh/chart: extractor-0.1.0
+    app.kubernetes.io/name: extractor
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cleanuri-helm/charts/webui/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: release-name-webui
+  labels:
+    helm.sh/chart: webui-0.1.0
+    app.kubernetes.io/name: webui
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: cleanuri-helm/charts/apigateway/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-apigateway
+  labels:
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: release-name
+---
+# Source: cleanuri-helm/charts/canonizer/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-canonizer
+  labels:
+    helm.sh/chart: canonizer-0.1.0
+    app.kubernetes.io/name: canonizer
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: canonizer
+    app.kubernetes.io/instance: release-name
+---
+# Source: cleanuri-helm/charts/extractor/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-extractor
+  labels:
+    helm.sh/chart: extractor-0.1.0
+    app.kubernetes.io/name: extractor
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: extractor
+    app.kubernetes.io/instance: release-name
+---
+# Source: cleanuri-helm/charts/webui/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-webui
+  labels:
+    helm.sh/chart: webui-0.1.0
+    app.kubernetes.io/name: webui
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: webui
+    app.kubernetes.io/instance: release-name
+---
+# Source: cleanuri-helm/charts/apigateway/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-apigateway
+  labels:
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apigateway
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: apigateway
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-apigateway
+      securityContext:
+        {}
+      containers:
+        - name: apigateway
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: "mrtux/cleanuri-apigateway:0.3.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: cleanuri-helm/charts/canonizer/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-canonizer
+  labels:
+    helm.sh/chart: canonizer-0.1.0
+    app.kubernetes.io/name: canonizer
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: canonizer
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: canonizer
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-canonizer
+      securityContext:
+        {}
+      containers:
+        - name: canonizer
+          securityContext:
+            {}
+          image: "mrtux/cleanuri-canonizer:0.3.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: cleanuri-helm/charts/extractor/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-extractor
+  labels:
+    helm.sh/chart: extractor-0.1.0
+    app.kubernetes.io/name: extractor
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: extractor
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: extractor
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-extractor
+      securityContext:
+        {}
+      containers:
+        - name: extractor
+          securityContext:
+            {}
+          image: "mrtux/cleanuri-extractor:0.3.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: cleanuri-helm/charts/webui/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-webui
+  labels:
+    helm.sh/chart: webui-0.1.0
+    app.kubernetes.io/name: webui
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webui
+      app.kubernetes.io/instance: release-name
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: webui
+        app.kubernetes.io/instance: release-name
+    spec:
+      serviceAccountName: release-name-webui
+      securityContext:
+        {}
+      containers:
+        - name: webui
+          securityContext:
+            {}
+          image: "mrtux/cleanuri-webui:0.2.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+---
+# Source: cleanuri-helm/charts/apigateway/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-apigateway-test-connection"
+  labels:
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.1"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-apigateway:80']
+  restartPolicy: Never
+---
+# Source: cleanuri-helm/charts/canonizer/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-canonizer-test-connection"
+  labels:
+    helm.sh/chart: canonizer-0.1.0
+    app.kubernetes.io/name: canonizer
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-canonizer:80']
+  restartPolicy: Never
+---
+# Source: cleanuri-helm/charts/extractor/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-extractor-test-connection"
+  labels:
+    helm.sh/chart: extractor-0.1.0
+    app.kubernetes.io/name: extractor
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.3.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-extractor:80']
+  restartPolicy: Never
+---
+# Source: cleanuri-helm/charts/webui/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-webui-test-connection"
+  labels:
+    helm.sh/chart: webui-0.1.0
+    app.kubernetes.io/name: webui
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-webui:80']
+  restartPolicy: Never

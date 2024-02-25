@@ -1,0 +1,15 @@
+dependencies:
+- name: apigateway
+  repository: file://charts/apigateway
+  version: 0.1.0
+- name: extractor
+  repository: file://charts/extractor
+  version: 0.1.0
+- name: canonizer
+  repository: file://charts/canonizer
+  version: 0.1.0
+- name: webui
+  repository: file://charts/webui
+  version: 0.1.0
+digest: sha256:e8905bb70cd1d31d41ae130b4a5eef132bf9f48e33c7f90c3c538a272276d489
+generated: "2023-05-21T21:12:27.106980038Z"
