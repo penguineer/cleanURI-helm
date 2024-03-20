@@ -1,0 +1,11 @@
+{{- if .Values.config }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "apigateway.fullname" . }}-cfg
+data:
+{{- range $key, $val := .Values.config }}
+  {{ $key }}: {{ $val | quote }}
+{{- end}}
+{{- end}}
